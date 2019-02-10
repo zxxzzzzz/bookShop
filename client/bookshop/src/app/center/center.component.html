@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <ul class="nav nav-tabs">
+        <li>
+           <a routerLink="/shop">首页</a>
+        </li>
+        <li  class="active">
+           <a routerLink="/center">个人中心</a>
+        </li>
+        <li>
+           <a routerLink="/cart">我的购物车</a>
+        </li>
+        <li>
+            <a routerLink="/hot">推荐及排行榜</a>
+         </li>
+      </ul>
+      <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              个人信息
+            </h3>
+          </div>
+          <div class="panel-footer">
+            <label>昵称：</label>
+            <input [(ngModel)]="name" type="text" (change)="infoChange()"/>
+          </div>
+          <div class="panel-footer">
+            <label>自我介绍：</label>
+            <input [(ngModel)]="message" type="text" (change)="infoChange()"/>
+          </div>
+          <div class="panel-footer">
+              <label>地址:</label>
+            <input [(ngModel)]="address" type="text" (change)="infoChange()"/>
+          </div>
+        </div>
+      <app-book></app-book>
+    </div>
+  </div>
+</div>

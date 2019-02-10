@@ -1,0 +1,72 @@
+<div class="row clearfix">
+  <div  class="col-md-4 column">
+    <div  class="panel panel-info" *ngFor="let book of book1s">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {{book['title']}}
+            </h3>
+        </div>
+          
+        <div class="panel-body"  >
+            <img [id]="book['id']" class="img-responsive" [src]="book['img']" (click)="jumpDetail($event.target.id)">
+          </div>
+          <div class="panel-heading">作者：{{book['author']}}</div>
+          <div class="panel-heading">出版社：{{book['press']}}</div>
+          <div class="panel-heading">价格：{{book['price']}} RMB</div>
+          <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
+          <div class="panel-heading">简介：{{book['introduction']}} </div>
+        <div class="panel-footer">
+            <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
+            <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
+            <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
+            <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
+        </div>
+    </div>
+  </div>
+  <div  class="col-md-4 column">
+      <div class="panel panel-info" *ngFor="let book of book2s">
+          <div class="panel-heading">
+              <h3 class="panel-title">
+                  {{book['title']}}
+              </h3>
+          </div>
+          <div class="panel-body">
+              <img class="img-responsive" [src]="book['img']" [id]="book['id']" (click)="jumpDetail($event.target.id)">
+          </div>
+          <div class="panel-heading">作者：{{book['author']}}</div>
+          <div class="panel-heading">出版社：{{book['press']}}</div>
+          <div class="panel-heading">价格：{{book['price']}} RMB</div>
+          <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
+          <div class="panel-heading">简介：{{book['introduction']}} </div>
+          <div class="panel-footer">
+            <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
+            <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
+            <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
+            <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
+          </div>
+      </div>
+  </div>
+  <div  class="col-md-4 column">
+      <div class="panel panel-info" *ngFor="let book of book3s">
+          <div class="panel-heading">
+              <h3 class="panel-title">
+                  {{book['title']}}
+              </h3>
+          </div>
+          <div class="panel-body">
+              <img class="img-responsive" [src]="book['img']" [id]="book['id']" (click)="jumpDetail($event.target.id)">
+          </div>
+          <div class="panel-heading">作者：{{book['author']}}</div>
+          <div class="panel-heading">出版社：{{book['press']}}</div>
+          <div class="panel-heading">价格：{{book['price']}} RMB</div>
+          <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
+          <div class="panel-heading">简介：{{book['introduction']}}</div>
+          <div class="panel-footer">
+            <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
+            <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
+            <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
+            <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+        <ul class="nav nav-tabs">
+          <li class="active">
+             <a routerLink="/shop">首页</a>
+          </li>
+          <li>
+             <a routerLink="/center">个人中心</a>
+          </li>
+          <li>
+             <a routerLink="/cart">我的购物车</a>
+          </li>
+          <li>
+              <a routerLink="/hot">推荐及排行榜</a>
+           </li>
+        </ul>
+        <div class="col-md-10 column">
+         
+
+        </div>
+        <div class="col-md-2 column">
+          <div class="input-group">
+            <input (change)="search($event.target.value)" type="text"/>
+            <span class="input-group-addon">搜索</span>
+          </div>
+        </div>
+        <app-book [joinCartButton]="true"></app-book>
+      </div>
+    </div>
+  </div>

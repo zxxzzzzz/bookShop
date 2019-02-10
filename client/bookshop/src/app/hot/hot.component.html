@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row clearfix">
+      <div class="col-md-12 column">
+        <ul class="nav nav-tabs">
+          <li>
+             <a routerLink="/shop">首页</a>
+          </li>
+          <li>
+             <a routerLink="/center">个人中心</a>
+          </li>
+          <li>
+             <a routerLink="/cart">我的购物车</a>
+          </li>
+          <li class="active">
+              <a >推荐及排行榜</a>
+           </li>
+        </ul>
+        <div class="col-md-12 column">
+            <div class="btn-group">
+                <button type="button" (click)="books.showRecom()" class="btn btn-default">推荐</button>
+                <button type="button" (click)="books.showHot()" class="btn btn-default">热榜</button>
+            </div>
+        </div>
+       
+        <app-book></app-book>
+      </div>
+    </div>
+  </div>

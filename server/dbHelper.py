@@ -18,6 +18,14 @@ _con = pymysql.connect(host='localhost',
 
 def select(sqlStr, size = 0):
   result = None
+  global _con
+  _con.close()
+  _con = pymysql.connect(host='localhost',
+                             user='root',
+                             password='',
+                             db='bookshop',
+                             charset='utf8mb4',
+                             cursorclass=pymysql.cursors.DictCursor)
   with _con.cursor() as cursor:
     cursor.execute(sqlStr)
     if size <= 0:

@@ -1,0 +1,40 @@
+<div class="container">
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+      <ul class="nav nav-tabs">
+        <li class="active">
+           <a routerLink="/shop">首页</a>
+        </li>
+        <li>
+           <a routerLink="/center">个人中心</a>
+        </li>
+        <li>
+           <a routerLink="/cart">我的购物车</a>
+        </li>
+        <li>
+            <a routerLink="/hot">推荐及排行榜</a>
+         </li>
+      </ul>
+      <div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						图书名称：{{title}}
+					</h3>
+				</div>
+				<div class="panel-body">
+					出版社: {{press}}
+        </div>
+        <div class="panel-body">
+					作者: {{author}}
+        </div>
+        <div *ngFor="let comment of comments;index as i" class="panel-footer">
+          评论：
+          <p>第{{i+1}}号评论：{{comment['content']}}</p>
+        </div>
+        <div class="panel-body">
+					试读: {{extract}}
+        </div>
+			</div>
+    </div>
+  </div>
+</div>

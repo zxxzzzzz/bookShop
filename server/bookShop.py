@@ -20,11 +20,14 @@ def login():
   args = request.get_json(force = True)
   name = args['name']
   password = args['password']
-  isExist = False
-  if shop.login(name, password):
+  user = shop.login(name, password)
+  if user == None:
+    isExist = False
+  else:
     isExist = True
   return jsonify({
-    'isSuccess': isExist
+    'isSucccess': isExist,
+    'info':user
   })
 
 # 登出(登出不在服务器做，在浏览器端做)
@@ -73,6 +76,7 @@ def search():
     params[key] = args[key]
   data = shop.searchBook(**params)
   return jsonify(data)
+
 
 # 书籍推荐
 @app.route(baseUrl + '/recom')
@@ -142,32 +146,59 @@ def getCart():
 @app.route(baseUrl + '/cash', methods=['POST'])
 def cancelBuy():
   args = request.get_json(force = True)
-  userId = args['userId']
-  bookId = args['bookId']
-  shop.delCart(userId, bookId)
+  cartId = args['id']
+  shop.delCart(cartId)
   return jsonify({
     'isSuccess':True
   })
 
 # 支付
-@app.route(baseUrl + '/order', methods=['POST'])
+@app.route(baseUrl + '/order', methods=['POST', 'GET'])
 def pay():
-  args = request.get_json(force = True)
-  userId = args['userId']
-  bookId = args['bookId']
-  shop.addOrder(userId, bookId)
-  return jsonify({
-    'isSuccess':True
-  })
+  if request.method == 'POST':
+    args = request.get_json(force = True)
+    userId = args['userId']
+    bookId = args['bookId']
+    cartId = args['cartId']
+    shop.delCart(cartId)
+    shop.addOrder(userId, bookId)
+    return jsonify({
+      'isSuccess':True
+    })
+  # 获取订单信息
+  if request.method == 'GET':
+    args = request.args
+    userId = args['userId']
+    return jsonify(shop.getOrder(userId))
 
-# 获取订单信息
-@app.route('/order')
-def order():
-  args = request.args
-  userId = args['userId']
-  return jsonify(shop.getOrder(userId))
+
   
+# 通用api,直接执行sql
+@app.route(baseUrl + '/userInfo', methods=['POST', 'GET'])
+def userInfo():
+  if request.method == 'GET':
+    args = request.args
+    userId = args['userId']
+    return jsonify(shop.getUserInfo(userId))
+
 # 确认收货
 @app.route('/delivery')
 def index():
   return 'Hello, World!'
+
+################################管理员
+@app.route(baseUrl + '/book', methods=['POST'])
+def addBook():
+  args = request.get_json(force = True)
+  title = args['title'] 
+  press = args['press'] 
+  price = args['price'] 
+  pageCount = args['pageCount'] 
+  extract = args['extract'] 
+  author = args['author'] 
+  img = args['img']
+  intro = args['intro']
+  shop.addBook(title, press, price, pageCount, extract, author, img, intro)
+  return jsonify({
+    'isSuccess':True
+  })

@@ -15,8 +15,8 @@ def login(name, password):
   sql = f"select * from `user` where `name`={name} and `password`={password}"
   datas = db.select(sql)
   if len(datas) == 0:
-    return False
-  return True
+    return None
+  return datas[0]
 
 def regi(name, password, mail):
   sql = f'insert into `user` (`name`, `password`, `role`, `active`, `mail`) values ("{name}", "{password}", 1, "unactive", "{mail}")'
@@ -30,28 +30,40 @@ def activeUser(name):
   sql = f'update `user` set `active`="active" where `name`="{name}"'
   db.commit(sql)
 
-def searchBook(*args, title='', author='', press='', bookClass=''):
-  re = []
-  sql = ''
-  classSql = f' and class.class like "%{bookClass}%"'
-  titleSql = f' and book.title like "%{title}%"'
-  authorSql = f' and book.author like "%{author}%"'
-  pressSql = f' and book.press like "%{press}%"'
+def searchBook(*args, title='', author='', press='', bookClass='', bookId=-1):
+  classSql = f'class.class like "%{bookClass}%"'
+  titleSql = f'book.title like "%{title}%"'
+  authorSql = f'book.author like "%{author}%"'
+  pressSql = f'book.press like "%{press}%"'
+  bookIdSql = f'book.id = {bookId}'
   # priceSql = f' and `book.price` between {price[0]} and {price[1]}'
-  baseSql = f'SELECT * from `book` INNER JOIN `class` on class.bookId=book.id'
-  sql = baseSql
-  if bookClass != '':
-    sql += classSql
+  baseSql = f'SELECT * from `book` INNER JOIN `class` on class.bookId=book.id and ('
+  
+  otherPartSql = '1=1'
   if title != '':
-    sql += titleSql
+   otherPartSql = titleSql
   if author != '':
-    sql += authorSql
+    if len(otherPartSql) < 6:
+      otherPartSql = authorSql
+    else:
+      otherPartSql += ' or ' + authorSql
   if press != '':
-    sql += pressSql
-  # if price != []:
-  #   sql += priceSql
-  # print(sql)
-  return db.select(sql)
+    if len(otherPartSql) < 6:
+      otherPartSql = pressSql
+    else:
+      otherPartSql += ' or ' + pressSql
+  if bookClass != '':
+    if len(otherPartSql) < 6:
+      otherPartSql = classSql
+    else:
+      otherPartSql += ' or ' + otherPartSql
+  if bookId != -1:
+    if len(otherPartSql) < 6:
+      otherPartSql = bookIdSql
+    else:
+      otherPartSql += ' or ' + bookIdSql
+  otherPartSql += ')'
+  return db.select(baseSql + otherPartSql)
 
 def getRecomBooks(userId, limit = 10):
   # 直接查询最新操作
@@ -66,6 +78,10 @@ def getRecomBooks(userId, limit = 10):
     bookClass = row['class']
     re = searchBook(bookClass=bookClass)
   return re
+
+def getUserInfo(userId):
+  sql = f'select * from userinfo where userId={userId}'
+  return db.select(sql)
 
 def getHotBooks(limit=10):
   re = []
@@ -100,17 +116,22 @@ def getCart(userId):
   sql = f'select * from shoppingcart inner join book on shoppingcart.bookId = book.id and shoppingcart.userId={userId}'
   return db.select(sql)
 
-def delCart(userId, bookId):
-  sql = f'delete from shoppingcart where bookId={bookId} and userId={userId}'
+def delCart(id):
+  sql = f'delete from shoppingcart where id={id}'
   return db.commit(sql)
 
 def addOrder(userId, bookId):
-  sql = f'insert into order (bookId, userId, state) values ({bookId}, {userId}, "待发货")'
+  sql = f'insert into `order` (bookId, userId, state) values ({bookId}, {userId}, "待发货")'
   return db.commit(sql)
 
 def getOrder(userId):
-  sql = f'select * from order where userId={userId}'
+  sql = f'select * from `order` inner join book on order.bookId=book.id and order.userId={userId}'
   return db.select(sql)
+
+def addBook(title, press, price, pageCount, extract, author, img, intro):
+  sql = f'insert into book (title, press, price, pageCount, extract, author, img, introduction) values ("{title}", "{press}", {price}, {pageCount}, "{extract}", "{author}", "{img}", "{intro}")'
+  # print(sql)
+  return db.commit(sql)
 
 
 def sendMail(address, content):

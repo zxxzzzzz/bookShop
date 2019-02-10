@@ -1,0 +1,35 @@
+{
+  "/api/login":{
+    "target":"http://localhost:5000"
+  },
+  "/api/regi":{
+    "target":"http://localhost:5000"
+  },
+  "/api/search":{
+    "target":"http://localhost:5000"
+  },
+  "/api/cart":{
+    "target":"http://localhost:5000"
+  },
+  "/api/recom":{
+    "target":"http://localhost:5000"
+  },
+  "/api/hot":{
+    "target":"http://localhost:5000"
+  },
+  "/api/comment":{
+    "target":"http://localhost:5000"
+  },
+  "/api/read":{
+    "target":"http://localhost:5000"
+  },
+  "/api/cash":{
+    "target":"http://localhost:5000"
+  },
+  "/api/userInfo":{
+    "target":"http://localhost:5000"
+  },
+  "/api/order":{
+    "target":"http://localhost:5000"
+  }
+}
