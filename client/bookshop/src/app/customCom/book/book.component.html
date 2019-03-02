@@ -6,7 +6,6 @@
                 {{book['title']}}
             </h3>
         </div>
-          
         <div class="panel-body"  >
             <img [id]="book['id']" class="img-responsive" [src]="book['img']" (click)="jumpDetail($event.target.id)">
           </div>
@@ -15,11 +14,21 @@
           <div class="panel-heading">价格：{{book['price']}} RMB</div>
           <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
           <div class="panel-heading">简介：{{book['introduction']}} </div>
+          <div class="panel-heading">库存：{{book['stockCount']}} </div>
         <div class="panel-footer">
             <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
+            <!-- bookId -->
             <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
+            <!-- cart id -->
             <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
             <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
+            <!-- bookId orderId -->
+            <button *ngIf="sendGoodsButton && book['state'] == '待发货'" [id]="book['bookId'] +';'+ book['id']" (click)="sendGoods($event.target.id)">确认发货</button>
+            <button *ngIf="receiveGoodsButton && book['state'] == '已发货'" [id]="book['bookId'] +';'+ book['id']" (click)="receiveGoods($event.target.id)">确认收货</button>
+            <div *ngIf="sendCommentButton && book['state'] == '已收货'">
+                <input type="text" [(ngModel)]="commentContent"/>
+                <button  [id]="book['bookId'] +';'+ book['id']" (click)="sendComment($event.target.id)">发送评论</button>
+            </div>
         </div>
     </div>
   </div>
@@ -38,12 +47,15 @@
           <div class="panel-heading">价格：{{book['price']}} RMB</div>
           <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
           <div class="panel-heading">简介：{{book['introduction']}} </div>
+          <div class="panel-heading">库存：{{book['stockCount']}} </div>
           <div class="panel-footer">
             <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
             <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
             <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
             <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
-          </div>
+            <button *ngIf="sendGoodsButton && book['state'] == '待发货'" [id]="book['bookId'] +';'+ book['id']" (click)="sendGoods($event.target.id)">确认发货</button>
+            <button *ngIf="receiveGoodsButton && book['state'] == '已发货'" [id]="book['bookId'] +';'+ book['id']" (click)="receiveGoods($event.target.id)">确认收货</button>
+        </div>
       </div>
   </div>
   <div  class="col-md-4 column">
@@ -61,12 +73,15 @@
           <div class="panel-heading">价格：{{book['price']}} RMB</div>
           <div class="panel-heading">页数：{{book['pageCount']}} 页</div>
           <div class="panel-heading">简介：{{book['introduction']}}</div>
+          <div class="panel-heading">库存：{{book['stockCount']}} </div>
           <div class="panel-footer">
             <p *ngIf="book['state']">货物状态:{{book['state']}}</p>
             <button *ngIf="joinCartButton" [id]="book['id']" (click)="addCart($event.target.id)">添加到购物车</button>
             <button *ngIf="deleteCartButton" [id]="book['id']" (click)="delCart($event.target.id)">从购物车删除</button>
             <button *ngIf="deleteCartButton" [id]="book['bookId'] +';'+ book['id']" (click)="addOrder($event.target.id)">确认购买</button>
-          </div>
+            <button *ngIf="sendGoodsButton && book['state'] == '待发货'" [id]="book['bookId'] +';'+ book['id']" (click)="sendGoods($event.target.id)">确认发货</button>
+            <button *ngIf="receiveGoodsButton && book['state'] == '已发货'" [id]="book['bookId'] +';'+ book['id']" (click)="receiveGoods($event.target.id)">确认收货</button>
+        </div>
       </div>
   </div>
 </div>

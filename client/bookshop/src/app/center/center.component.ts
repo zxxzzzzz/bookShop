@@ -14,6 +14,7 @@ export class CenterComponent implements OnInit {
   name = '';
   address = '';
   message= '';
+  sex = '';
 
   constructor(private state:StateService, private http:HttpClient) { }
 
@@ -21,17 +22,34 @@ export class CenterComponent implements OnInit {
     let userId = this.state.userId;
     
     let url = `/api/userInfo?userId=${userId}`
-    this.http.get(url).subscribe((data) => {
-      data = data[0];
-      this.address = data['address'];
-      this.name = data['name'];
-      this.message = data['message'];
-      this.books.showOrderBook(userId);
+    this.http.get(url).subscribe((data:Array<any>) => {
+      if(data.length > 0){
+        data = data[0];
+        this.address = data['address'];
+        this.name = data['name'];
+        this.message = data['message'];
+        this.sex = data['sex'];
+        this.books.showOrderBook(userId);
+      }
     })
   }
 
   infoChange(){
-    
+    let userId = this.state.userId;
+    let sex = this.sex;
+    let name = this.name;
+    let message = this.message;
+    let address = this.address;
+    let sendData = {
+      'userId': userId,
+      'sex': sex,
+      'name': name,
+      'message': message,
+      'address': address
+    }
+    this.http.post('/api/userInfo',sendData).subscribe(() => {
+      alert('更新成功');
+    })
   }
 
 }

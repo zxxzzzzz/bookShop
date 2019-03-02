@@ -26,6 +26,10 @@
             <input [(ngModel)]="name" type="text" (change)="infoChange()"/>
           </div>
           <div class="panel-footer">
+            <label>性别：</label>
+            <input [(ngModel)]="sex" type="text" (change)="infoChange()"/>
+          </div>
+          <div class="panel-footer">
             <label>自我介绍：</label>
             <input [(ngModel)]="message" type="text" (change)="infoChange()"/>
           </div>
@@ -34,7 +38,7 @@
             <input [(ngModel)]="address" type="text" (change)="infoChange()"/>
           </div>
         </div>
-      <app-book></app-book>
+      <app-book [receiveGoodsButton]="true" [sendCommentButton]="true"></app-book>
     </div>
   </div>
 </div>

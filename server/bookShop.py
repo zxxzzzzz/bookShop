@@ -101,27 +101,33 @@ def read():
   })
 
 # 添加书评
-@app.route(baseUrl + '/comment', methods=['POST'])
+@app.route(baseUrl + '/comment', methods=['POST', 'GET'])
 def comment():
-  args = request.get_json(force = True)
-  userId = args['userId']
-  bookId = args['bookId']
-  content = args['content']
-  shop.addComment(userId, bookId, content)
-  return jsonify({
-    'isSuccess':True
-  })
+  if request.method == 'POST':
+    args = request.get_json(force = True)
+    userId = args['userId']
+    bookId = args['bookId']
+    content = args['content']
+    shop.addComment(userId, bookId, content)
+    return jsonify({
+      'isSuccess':True
+    })
+  if request.method == 'GET':
+    args = request.args
+    bookId = args['bookId']
+    return jsonify(
+      shop.getComment(bookId)
+    )
 
 
-
-# 获取书评
-@app.route(baseUrl + '/comment')
-def getComment():
-  args = request.args
-  bookId = args['bookId']
-  return jsonify(
-    shop.getComment(bookId)
-  )
+# # 获取书评(废弃)
+# @app.route(baseUrl + '/comment')
+# def getComment():
+#   args = request.args
+#   bookId = args['bookId']
+#   return jsonify(
+#     shop.getComment(bookId)
+#   )
 
 # 添加购物车
 @app.route(baseUrl + '/cart', methods=['POST'])
@@ -169,17 +175,30 @@ def pay():
   if request.method == 'GET':
     args = request.args
     userId = args['userId']
+    userId = int(userId, 10)
     return jsonify(shop.getOrder(userId))
 
 
   
-# 通用api,直接执行sql
+# 获取用户信息
 @app.route(baseUrl + '/userInfo', methods=['POST', 'GET'])
 def userInfo():
   if request.method == 'GET':
     args = request.args
     userId = args['userId']
     return jsonify(shop.getUserInfo(userId))
+  if request.method == 'POST': # 设置用户信息
+    args = request.get_json(force = True)
+    userId = args['userId']
+    sex = args['sex']
+    name = args['name']
+    message = args['message']
+    address = args['address']
+    return jsonify(shop.insertUserInfo(userId, sex, name, message, address))
+
+
+
+
 
 # 确认收货
 @app.route('/delivery')
@@ -198,7 +217,38 @@ def addBook():
   author = args['author'] 
   img = args['img']
   intro = args['intro']
-  shop.addBook(title, press, price, pageCount, extract, author, img, intro)
+  bookClass = args['class']
+  stockCount = args['stockCount']
+  shop.addBook(title, press, price, pageCount, extract, author, img, intro, bookClass, stockCount)
+  return jsonify({
+    'isSuccess':True
+  })
+
+@app.route(baseUrl + '/book/update', methods=['POST'])
+def updateBook():
+  args = request.get_json(force = True)
+  bookId = args['id']
+  title = args['title'] 
+  press = args['press'] 
+  price = args['price'] 
+  pageCount = args['pageCount'] 
+  extract = args['extract'] 
+  author = args['author'] 
+  img = args['img']
+  intro = args['intro']
+  bookClass = args['class']
+  stockCount = args['stockCount']
+  shop.updateBook(bookId, title, press, price, pageCount, extract, author, img, intro, bookClass, stockCount)
+  return jsonify({
+    'isSuccess':True
+  })
+
+@app.route(baseUrl + '/order/update', methods=['POST'])
+def updateOrder():
+  args = request.get_json(force = True)
+  orderId = args['orderId']
+  state = args['state']
+  shop.updateOrder(orderId, state)
   return jsonify({
     'isSuccess':True
   })

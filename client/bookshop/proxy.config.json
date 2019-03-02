@@ -31,5 +31,11 @@
   },
   "/api/order":{
     "target":"http://localhost:5000"
+  },
+  "/api/book":{
+    "target":"http://localhost:5000"
+  },
+  "api/book/update":{
+    "target":"http://localhost:5000"
   }
 }

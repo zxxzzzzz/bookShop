@@ -10,6 +10,7 @@ export class StateService {
   name = '';
   mail = '';
   password = '';
+  role = 1; // 1=normal 0=admin
 
 
   constructor() { }

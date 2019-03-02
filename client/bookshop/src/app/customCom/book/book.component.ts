@@ -17,6 +17,14 @@ export class BookComponent implements OnInit {
   @Input() joinCartButton = false;
   @Input() deleteCartButton = false;
   @Input() joinOrderButton = false;
+  @Input() sendGoodsButton = false;
+  @Input() receiveGoodsButton = false;
+  @Input() sendCommentButton = false;
+  @Input() jumpUrl = null;
+
+
+  // ngmodel
+  commentContent = '';
 
   constructor(
     private http:HttpClient,
@@ -65,8 +73,15 @@ export class BookComponent implements OnInit {
   }
 
   jumpDetail(bookId){
-    let url = `/detail?bookId=${bookId}`
-    this.router.navigateByUrl(url)
+    if(this.jumpUrl === null){
+      let url = `/detail?bookId=${bookId}`
+      this.router.navigateByUrl(url)
+    }
+    else {
+      if(typeof this.jumpUrl === 'function') {
+        this.jumpUrl(bookId)
+      }
+    }
   }
 
   showHot(){
@@ -87,9 +102,21 @@ export class BookComponent implements OnInit {
       if (len >= 3){
         let count = Math.floor(len / 3)
         let remain = len - count*3
-        this.book1s = data.slice(0, count + remain)
-        this.book2s = data.slice(count + remain, count*2 + remain)
-        this.book3s = data.slice(count*2 + remain, len)
+        this.book1s = data.slice(0, count)
+        this.book2s = data.slice(count, count*2)
+        this.book3s = data.slice(count*2, count*3)
+        for (let index = 0; index < remain; index++) {
+          const element = data.slice(count * 3 + index, count * 3 + index + 1)[0];
+          if(index%3 === 0){
+            this.book1s.push(element)
+          }
+          if(index%3 === 1){
+            this.book2s.push(element)
+          }
+          if(index%3 === 2){
+            this.book3s.push(element)
+          }
+        }
       }
     })
   }
@@ -112,9 +139,21 @@ export class BookComponent implements OnInit {
       if (len >= 3){
         let count = Math.floor(len / 3)
         let remain = len - count*3
-        this.book1s = data.slice(0, count + remain)
-        this.book2s = data.slice(count + remain, count*2 + remain)
-        this.book3s = data.slice(count*2 + remain, len)
+        this.book1s = data.slice(0, count)
+        this.book2s = data.slice(count, count*2)
+        this.book3s = data.slice(count*2, count*3)
+        for (let index = 0; index < remain; index++) {
+          const element = data.slice(count * 3 + index, count * 3 + index + 1)[0];
+          if(index%3 === 0){
+            this.book1s.push(element)
+          }
+          if(index%3 === 1){
+            this.book2s.push(element)
+          }
+          if(index%3 === 2){
+            this.book3s.push(element)
+          }
+        }
       }
     })
   }
@@ -139,9 +178,21 @@ export class BookComponent implements OnInit {
       if (len >= 3){
         let count = Math.floor(len / 3)
         let remain = len - count*3
-        this.book1s = data.slice(0, count + remain)
-        this.book2s = data.slice(count + remain, count*2 + remain)
-        this.book3s = data.slice(count*2 + remain, len)
+        this.book1s = data.slice(0, count)
+        this.book2s = data.slice(count, count*2)
+        this.book3s = data.slice(count*2, count*3)
+        for (let index = 0; index < remain; index++) {
+          const element = data.slice(count * 3 + index, count * 3 + index + 1)[0];
+          if(index%3 === 0){
+            this.book1s.push(element)
+          }
+          if(index%3 === 1){
+            this.book2s.push(element)
+          }
+          if(index%3 === 2){
+            this.book3s.push(element)
+          }
+        }
       }
     })
   }
@@ -165,9 +216,21 @@ export class BookComponent implements OnInit {
       if (len >= 3){
         let count = Math.floor(len / 3)
         let remain = len - count*3
-        this.book1s = data.slice(0, count + remain)
-        this.book2s = data.slice(count + remain, count*2 + remain)
-        this.book3s = data.slice(count*2 + remain, len)
+        this.book1s = data.slice(0, count)
+        this.book2s = data.slice(count, count*2)
+        this.book3s = data.slice(count*2, count*3)
+        for (let index = 0; index < remain; index++) {
+          const element = data.slice(count * 3 + index, count * 3 + index + 1)[0];
+          if(index%3 === 0){
+            this.book1s.push(element)
+          }
+          if(index%3 === 1){
+            this.book2s.push(element)
+          }
+          if(index%3 === 2){
+            this.book3s.push(element)
+          }
+        }
       }
     })
   }
@@ -209,10 +272,77 @@ export class BookComponent implements OnInit {
       if (len >= 3){
         let count = Math.floor(len / 3)
         let remain = len - count*3
-        this.book1s = data.slice(0, count + remain)
-        this.book2s = data.slice(count + remain, count*2 + remain)
-        this.book3s = data.slice(count*2 + remain, len)
+        this.book1s = data.slice(0, count)
+        this.book2s = data.slice(count, count*2)
+        this.book3s = data.slice(count*2, count*3)
+        for (let index = 0; index < remain; index++) {
+          const element = data.slice(count * 3 + index, count * 3 + index + 1)[0];
+          if(index%3 === 0){
+            this.book1s.push(element)
+          }
+          if(index%3 === 1){
+            this.book2s.push(element)
+          }
+          if(index%3 === 2){
+            this.book3s.push(element)
+          }
+        }
       }
+    })
+  }
+
+  sendGoods(idStr){
+    let bookId = parseInt(idStr.split(';')[0])
+    let orderId = parseInt(idStr.split(';')[1])
+    this.http.post(
+      '/api/order/update',
+      {
+        'orderId': orderId,
+        'state': '已发货'
+      }
+    ).subscribe(() => {
+      this.showOrderBook(-1)
+    })
+  }
+
+  receiveGoods(idStr){
+    let userId = this.state.userId;
+    let bookId = parseInt(idStr.split(';')[0])
+    let orderId = parseInt(idStr.split(';')[1])
+    this.http.post(
+      '/api/order/update',
+      {
+        'orderId': orderId,
+        'state': '已收货'
+      }
+    ).subscribe(() => {
+      this.showOrderBook(userId)
+    })
+  }
+
+  sendComment(idStr){
+    let userId = this.state.userId;
+    let bookId = parseInt(idStr.split(';')[0])
+    let orderId = parseInt(idStr.split(';')[1])
+    let comment = this.commentContent;
+    this.http.post(
+      '/api/order/update',
+      {
+        'orderId': orderId,
+        'state': '已评价'
+      }
+    ).subscribe(() => {
+      this.showOrderBook(userId)
+      this.http.post(
+        '/api/comment',
+        {
+          'userId':userId,
+          'bookId':bookId,
+          'content':comment,
+        }
+      ).subscribe(() => {
+        
+      })
     })
   }
 

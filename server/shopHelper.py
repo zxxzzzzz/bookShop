@@ -83,6 +83,17 @@ def getUserInfo(userId):
   sql = f'select * from userinfo where userId={userId}'
   return db.select(sql)
 
+def insertUserInfo(userId, sex, name, message, address):
+  sql = f'select * from userinfo where userId={userId}'
+  re = db.select(sql)
+  if len(re) > 0:
+    # update
+    sql = f'update userinfo set sex="{sex}", name="{name}",message="{message}",address="{address}" where userId={userId}'
+  else:
+    # insert
+    sql = f'insert into userinfo (userId, sex, name, message, address) values ({userId}, "{sex}", "{name}", "{message}", "{address}")'
+  return db.commit(sql)
+
 def getHotBooks(limit=10):
   re = []
   sql = f'SELECT bookId, count(bookId) from `history` group by `bookId` order by count(bookId) desc limit {limit}'
@@ -122,16 +133,49 @@ def delCart(id):
 
 def addOrder(userId, bookId):
   sql = f'insert into `order` (bookId, userId, state) values ({bookId}, {userId}, "待发货")'
+  db.commit(sql)
+  sql = f'update book set stockCount = stockCount -1 where id={bookId}'
   return db.commit(sql)
 
-def getOrder(userId):
+def getOrder(userId=-1):
+  if(userId == -1):
+    sql = f'select * from `order` inner join book on order.bookId=book.id' 
+    return db.select(sql)
   sql = f'select * from `order` inner join book on order.bookId=book.id and order.userId={userId}'
   return db.select(sql)
 
-def addBook(title, press, price, pageCount, extract, author, img, intro):
+def addBook(title, press, price, pageCount, extract, author, img, intro, bookClass, stockCount):
   sql = f'insert into book (title, press, price, pageCount, extract, author, img, introduction) values ("{title}", "{press}", {price}, {pageCount}, "{extract}", "{author}", "{img}", "{intro}")'
-  # print(sql)
+  db.commit(sql)
+  sql = 'select id from book order by id DESC limit 1'
+  bookId = db.select(sql)[0]['id']
+  for elem in bookClass.split(' '):
+    sql = f'insert into class (bookId, class) values ({bookId}, "{elem}")'
+    db.commit(sql)
+    
+def updateBook(id, title, press, price, pageCount, extract, author, img, intro, bookClass, stockCount):
+  sql = f'update book set title="{title}", press="{press}", price={price}, pageCount={pageCount}, extract="{extract}", author="{author}", img="{img}", introduction="{intro}", stockCount={stockCount} where id={id}'
+  print(sql)
+  db.commit(sql)
+  sql = f'delete from class where bookId={id}'
+  db.commit(sql)
+  sql = f'insert into class (bookId, class) values ({id}, "{bookClass}")'
   return db.commit(sql)
+
+def updateOrder(orderId, state):
+  sql = f'update `order` set state="{state}" where id={orderId}'
+  return db.commit(sql)
+
+def updateUserInfo(userId, sex, name, message, address):
+  sql = f'select * from userinfo where userId={userId}'
+  data = db.select(sql)
+  if len(data) > 0:
+    # update
+    sql = f'update userinfo set sex="{sex}", name="{name}", message="{message}", address="{address}" where userId={userId}'
+    db.commit(sql)
+  else:
+    # insert
+    sql = f'insert into userInfo (sex,name,message,address) values ("{sex}", "{name}", "{message}", "{address}") where userId='
 
 
 def sendMail(address, content):

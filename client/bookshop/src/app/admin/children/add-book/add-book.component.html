@@ -1,0 +1,60 @@
+<div class="col-md-10 column">
+  </div>
+  <div class="col-md-2 column">
+   
+  </div>
+  <div class="row clearfix">
+    <div class="col-md-12 column">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                图书添加
+              </h3>
+            </div>
+            <div class="panel-footer">
+              <label>标题：</label>
+              <input [(ngModel)]="bookTitle" type="text" />
+            </div>
+            <div class="panel-footer">
+              <label>出版社</label>
+              <input [(ngModel)]="bookPress" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>价格:</label>
+              <input [(ngModel)]="bookPrice" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>页数:</label>
+              <input [(ngModel)]="bookPageCount" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>试读内容:</label>
+              <textarea [(ngModel)]="bookExtract" type="text" ></textarea>
+            </div>
+            <div class="panel-footer">
+                <label>作者:</label>
+              <input [(ngModel)]="bookAuthor" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>图书图片:</label>
+              <input [(ngModel)]="bookImg" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>介绍:</label>
+              <input [(ngModel)]="bookIntro" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>类目:</label>
+              <input [(ngModel)]="bookClass" type="text" />
+            </div>
+            <div class="panel-footer">
+                <label>库存:</label>
+              <input [(ngModel)]="bookStockCount" type="text" />
+            </div>
+            <div class="panel-footer">
+              <button (click)="AddBook()">提交</button>
+            </div>
+          </div>
+    </div>  
+  </div>
+  
