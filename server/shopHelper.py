@@ -121,6 +121,8 @@ def getComment(bookId):
 
 def addCart(userId, bookId):
   sql = f'insert into shoppingcart (bookId, userId) values ({bookId}, {userId})'
+  db.commit(sql)
+  sql = f'insert into history (action, bookId, userId) values ("cart", {bookId}, {userId})'
   return db.commit(sql)
 
 def getCart(userId):
